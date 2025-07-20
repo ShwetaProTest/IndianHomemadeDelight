@@ -6,297 +6,256 @@
   <title>Delicious Indian Kitchen</title>
   <style>
     body {
+      font-family: sans-serif;
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding-top: 60px;
       background: #fffaf5;
-      color: #333;
-      padding-bottom: 4rem;
     }
     header {
-      background: #ff6b00;
-      padding: 1rem;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #e65100;
       color: white;
-      font-size: 1.4rem;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      z-index: 1000;
     }
-    header a {
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+      flex-grow: 1;
+      text-align: center;
+      cursor: pointer;
+    }
+    header button {
+      background: none;
+      border: none;
       color: white;
-      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .container {
+      padding: 15px;
     }
     .category {
-      margin: 1.5rem 1rem 0;
-    }
-    .category h2 {
-      color: #b23e06;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0.3rem;
+      margin-bottom: 30px;
     }
     .item {
-      background: white;
-      margin: 0.8rem 0;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .item-title {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-weight: bold;
     }
     .item-desc {
-      font-size: 0.9rem;
-      margin: 0.5rem 0;
+      font-size: 12px;
+      color: #555;
     }
-    .qty-controls {
+    .quantity-controls {
       display: flex;
       align-items: center;
-      margin-top: 0.5rem;
+      gap: 5px;
+      margin-top: 5px;
     }
-    .qty-controls button {
-      padding: 0.4rem 0.8rem;
-      margin: 0 0.5rem;
-      font-size: 1rem;
-      border-radius: 5px;
+    .quantity-controls button {
+      width: 25px;
+      height: 25px;
+      font-size: 16px;
       border: none;
-      background: #eee;
-      cursor: pointer;
+      border-radius: 4px;
+      background: #e65100;
+      color: white;
     }
-    .view-cart {
+    #viewCartBtn {
+      display: none;
       position: fixed;
-      bottom: 1rem;
+      bottom: 15px;
       left: 50%;
       transform: translateX(-50%);
-      background: #25d366;
+      padding: 12px 20px;
+      background: green;
       color: white;
       border: none;
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      font-size: 1rem;
-      display: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
+      z-index: 1000;
     }
-    #cart-page {
+    #cartModal {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: #fff;
+      right: 0;
+      bottom: 0;
+      background: white;
+      z-index: 2000;
       display: none;
       flex-direction: column;
-      z-index: 10;
     }
-    #cart-header {
-      background: #ff6b00;
+    #cartModalHeader {
+      padding: 15px;
+      background: #e65100;
       color: white;
-      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    #cart-items {
-      padding: 1rem;
+    #cartItems {
       flex-grow: 1;
-      overflow-y: auto;
+      padding: 15px;
     }
-    #cart-items div {
-      margin-bottom: 0.5rem;
-    }
-    #cart-footer {
-      padding: 1rem;
-      border-top: 1px solid #ccc;
-      text-align: center;
-    }
-    #place-order {
-      background: #25d366;
+    #placeOrderBtn {
+      padding: 15px;
+      background: green;
       color: white;
-      padding: 0.8rem 2rem;
+      font-size: 18px;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
+      width: 100%;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="https://wa.me/4917611748611" target="_blank">Delicious Indian Kitchen &gt;</a>
+    <button onclick="closeCart()">Cancel</button>
+    <h1 onclick="openOwnerChat()">Delicious Indian Kitchen</h1>
+    <button onclick="openCart()">🛒</button>
   </header>
+  <div class="container" id="catalog"></div>
+  <button id="viewCartBtn" onclick="openCart()">View Cart</button>
 
-  <div id="menu">
-    <div class="category">
-      <h2>Biryani</h2>
-      <div class="item" data-name="Hyderabadi Biryani" data-price="8">
-        <div class="item-title">Hyderabadi Biryani <span>€8.00</span></div>
-        <div class="item-desc">Made with fresh vegetables and basmati rice.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-      <div class="item" data-name="Vegetable Biryani" data-price="7">
-        <div class="item-title">Vegetable Biryani <span>€7.00</span></div>
-        <div class="item-desc">Aromatic veggie mix with Indian spices.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-    </div>
-
-    <div class="category">
-      <h2>Curries</h2>
-      <div class="item" data-name="Paneer Butter Masala" data-price="6">
-        <div class="item-title">Paneer Butter Masala <span>€6.00</span></div>
-        <div class="item-desc">Creamy tomato curry with soft paneer.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-      <div class="item" data-name="Chana Masala" data-price="5.5">
-        <div class="item-title">Chana Masala <span>€5.50</span></div>
-        <div class="item-desc">Spiced chickpeas in onion-tomato gravy.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-    </div>
-
-    <div class="category">
-      <h2>Chutney</h2>
-      <div class="item" data-name="Coconut Chutney" data-price="2">
-        <div class="item-title">Coconut Chutney <span>€2.00</span></div>
-        <div class="item-desc">Fresh coconut, green chili and tempered spices.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-      <div class="item" data-name="Tomato Chutney" data-price="2">
-        <div class="item-title">Tomato Chutney <span>€2.00</span></div>
-        <div class="item-desc">Tangy tomatoes with South Indian spices.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-    </div>
-
-    <div class="category">
-      <h2>Batter</h2>
-      <div class="item" data-name="Dosa Batter" data-price="3.5">
-        <div class="item-title">Dosa Batter <span>€3.50</span></div>
-        <div class="item-desc">Fermented batter made fresh daily.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-      <div class="item" data-name="Idli Batter" data-price="3">
-        <div class="item-title">Idli Batter <span>€3.00</span></div>
-        <div class="item-desc">Soft and fluffy idli batter mix.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-    </div>
-
-    <div class="category">
-      <h2>Snacks</h2>
-      <div class="item" data-name="Medu Vada" data-price="1">
-        <div class="item-title">Medu Vada <span>€1.00</span></div>
-        <div class="item-desc">Crispy lentil donuts with spices.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-      <div class="item" data-name="Masala Dosa" data-price="4.5">
-        <div class="item-title">Masala Dosa <span>€4.50</span></div>
-        <div class="item-desc">Stuffed dosa with spicy potato filling.</div>
-        <div class="qty-controls"><button class="add-btn">+</button></div>
-      </div>
-    </div>
-  </div>
-
-  <button class="view-cart" id="view-cart">View Cart</button>
-
-  <div id="cart-page">
-    <div id="cart-header">
+  <div id="cartModal">
+    <div id="cartModalHeader">
       <span>Your Cart</span>
-      <button onclick="closeCart()" style="background:none;border:none;color:white;font-size:1.2rem;">✕</button>
+      <button onclick="closeCart()">✖</button>
     </div>
-    <div id="cart-items"></div>
-    <div id="cart-footer">
-      <div id="cart-total"></div>
-      <button id="place-order">Place Order</button>
-    </div>
+    <div id="cartItems"></div>
+    <button id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
   </div>
 
   <script>
-    const items = document.querySelectorAll('.item');
+    const phone = '+4917611748611';
+
+    const catalog = {
+      Biryani: [
+        { name: 'Hyderabadi Biryani', desc: 'Made with fresh veg', price: 8 },
+        { name: 'Vegetable Biryani', desc: 'Aromatic spiced rice', price: 7 },
+      ],
+      Curries: [
+        { name: 'Paneer Butter Masala', desc: 'Rich tomato curry with paneer', price: 6 },
+        { name: 'Chickpea Masala', desc: 'Spiced chickpea curry', price: 5 },
+      ],
+      Chutney: [
+        { name: 'Coconut Chutney', desc: 'Creamy coconut base', price: 2 },
+        { name: 'Mint Chutney', desc: 'Fresh and tangy', price: 2 },
+      ],
+      Batter: [
+        { name: 'Dosa Batter', desc: 'Fermented batter for dosas', price: 3 },
+        { name: 'Idli Batter', desc: 'Soft and fluffy idli mix', price: 3 },
+      ],
+      Snacks: [
+        { name: 'Medu Vada', desc: 'Crispy outside, soft inside', price: 4 },
+        { name: 'Pakoda Mix', desc: 'Spicy fritter mix', price: 3 },
+      ],
+    };
+
     const cart = {};
-    const cartBtn = document.getElementById('view-cart');
-    const cartPage = document.getElementById('cart-page');
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-    const placeOrderBtn = document.getElementById('place-order');
 
-    items.forEach(item => {
-      const addBtn = item.querySelector('.add-btn');
-      addBtn.addEventListener('click', () => {
-        const name = item.dataset.name;
-        const price = parseFloat(item.dataset.price);
-
-        if (!cart[name]) {
-          cart[name] = { qty: 1, price };
-        } else {
-          cart[name].qty++;
-        }
-
-        renderControls(item, name);
-        updateCartBtn();
-      });
-    });
-
-    function renderControls(item, name) {
-      const controls = item.querySelector('.qty-controls');
-      controls.innerHTML = `
-        <button onclick="decreaseQty('${name}')">−</button>
-        <span>${cart[name].qty}</span>
-        <button onclick="increaseQty('${name}')">+</button>
-      `;
+    function renderCatalog() {
+      const container = document.getElementById('catalog');
+      for (const category in catalog) {
+        const section = document.createElement('div');
+        section.className = 'category';
+        section.innerHTML = `<h2>${category}</h2>`;
+        catalog[category].forEach(item => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'item';
+          itemDiv.innerHTML = `
+            <div class="item-title">
+              <strong>${item.name}</strong>
+              <span>€${item.price}</span>
+            </div>
+            <div class="item-desc">${item.desc}</div>
+            <div class="quantity-controls">
+              <button onclick="decrease('${item.name}')">-</button>
+              <span id="qty-${item.name}">0</span>
+              <button onclick="increase('${item.name}', ${item.price})">+</button>
+            </div>
+          `;
+          section.appendChild(itemDiv);
+        });
+        container.appendChild(section);
+      }
     }
 
-    function increaseQty(name) {
+    function increase(name, price) {
+      if (!cart[name]) cart[name] = { qty: 0, price };
       cart[name].qty++;
-      updateAll();
+      document.getElementById(`qty-${name}`).innerText = cart[name].qty;
+      document.getElementById('viewCartBtn').style.display = 'block';
     }
 
-    function decreaseQty(name) {
-      if (--cart[name].qty <= 0) delete cart[name];
-      updateAll();
+    function decrease(name) {
+      if (cart[name]) {
+        cart[name].qty--;
+        if (cart[name].qty <= 0) delete cart[name];
+        const el = document.getElementById(`qty-${name}`);
+        if (el) el.innerText = cart[name]?.qty || 0;
+      }
+      if (Object.keys(cart).length === 0) {
+        document.getElementById('viewCartBtn').style.display = 'none';
+      }
     }
 
-    function updateAll() {
-      items.forEach(item => {
-        const name = item.dataset.name;
-        if (cart[name]) renderControls(item, name);
-        else item.querySelector('.qty-controls').innerHTML = '<button class="add-btn">+</button>';
-      });
-      updateCartBtn();
-    }
-
-    function updateCartBtn() {
-      cartBtn.style.display = Object.keys(cart).length > 0 ? 'block' : 'none';
-    }
-
-    cartBtn.onclick = () => {
+    function openCart() {
+      document.getElementById('cartModal').style.display = 'flex';
+      const cartItems = document.getElementById('cartItems');
       cartItems.innerHTML = '';
       let total = 0;
-      for (let name in cart) {
-        const qty = cart[name].qty;
-        const price = cart[name].price;
-        total += qty * price;
-        cartItems.innerHTML += `<div>${name} × ${qty} — €${(qty * price).toFixed(2)}</div>`;
+      for (const name in cart) {
+        const item = cart[name];
+        const row = document.createElement('div');
+        row.innerText = `${name} × ${item.qty} — €${item.price * item.qty}`;
+        cartItems.appendChild(row);
+        total += item.price * item.qty;
       }
-      cartTotal.innerText = `Total: €${total.toFixed(2)}`;
-      cartPage.style.display = 'flex';
-    };
-
-    function closeCart() {
-      cartPage.style.display = 'none';
+      const totalRow = document.createElement('div');
+      totalRow.style.marginTop = '10px';
+      totalRow.innerHTML = `<strong>Total: €${total}</strong>`;
+      cartItems.appendChild(totalRow);
     }
 
-    placeOrderBtn.onclick = () => {
-      let message = "Hello! I'd like to order:\n\n";
+    function closeCart() {
+      document.getElementById('cartModal').style.display = 'none';
+    }
+
+    function openOwnerChat() {
+      window.open(`https://wa.me/${phone}`, '_blank');
+    }
+
+    function placeOrder() {
+      let msg = 'Hello! I\'d like to order:\n';
       let total = 0;
-      for (let name in cart) {
-        const qty = cart[name].qty;
-        const price = cart[name].price;
-        message += `- ${name} × ${qty} — €${(qty * price).toFixed(2)}\n`;
-        total += qty * price;
+      for (const name in cart) {
+        const item = cart[name];
+        msg += `- ${name} × ${item.qty} — €${item.price * item.qty}\n`;
+        total += item.price * item.qty;
       }
-      message += `\nTotal: €${total.toFixed(2)}\n\nPlease confirm. Thanks!`;
-      const encoded = encodeURIComponent(message);
-      window.open(`https://wa.me/4917611748611?text=${encoded}`, '_blank');
-    };
+      msg += `\nTotal: €${total}`;
+      const encodedMsg = encodeURIComponent(msg);
+      const url = `https://wa.me/${phone}?text=${encodedMsg}`;
+      window.open(url, '_blank');
+    }
+
+    renderCatalog();
   </script>
 </body>
 </html>
