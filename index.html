@@ -2,106 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Delicious Indian Homemade Food</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delicious Indian Homemade Delight</title>
   <style>
     body {
-      font-family: sans-serif;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+      background: #fff8f0;
+      color: #333;
     }
     h1 {
       text-align: center;
+      color: #b23e06;
     }
     .item {
-      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+      background: #fff;
     }
-    .item label {
-      display: inline-block;
-      width: 200px;
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .qty {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
     }
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 0.4rem 0.8rem;
+      font-size: 1.1rem;
+      margin: 0 0.5rem;
       cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+    .btn-minus, .btn-plus {
+      background-color: #eee;
+    }
+    .place-order {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      background-color: #25D366;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .total {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+      font-size: 1.2rem;
     }
   </style>
 </head>
 <body>
-  <h1>🍽️ Delicious Indian Homemade Food</h1>
+  <h1>Indian Homemade Delight</h1>
 
-  <div class="item">
-    <label>Dosa Batter (€4):</label>
-    <input type="number" id="dosaBatter" value="0" min="0" />
-  </div>
-  <div class="item">
-    <label>Idli Batter (€4):</label>
-    <input type="number" id="idliBatter" value="0" min="0" />
-  </div>
-  <div class="item">
-    <label>Masala Dosa (€3):</label>
-    <input type="number" id="masalaDosa" value="0" min="0" />
-  </div>
-  <div class="item">
-    <label>Plain Dosa (€2):</label>
-    <input type="number" id="plainDosa" value="0" min="0" />
-  </div>
-  <div class="item">
-    <label>Idli (2 pcs) (€2):</label>
-    <input type="number" id="idli" value="0" min="0" />
+  <div class="item" data-name="Dosa Batter" data-price="3.5">
+    <div class="item-header">
+      <span>Dosa Batter (€3.50)</span>
+    </div>
+    <div class="qty">
+      <button class="btn-minus">−</button>
+      <span class="quantity">0</span>
+      <button class="btn-plus">+</button>
+    </div>
   </div>
 
-  <button onclick="placeOrder()">📲 Place Order on WhatsApp</button>
+  <div class="item" data-name="Idli Batter" data-price="3.0">
+    <div class="item-header">
+      <span>Idli Batter (€3.00)</span>
+    </div>
+    <div class="qty">
+      <button class="btn-minus">−</button>
+      <span class="quantity">0</span>
+      <button class="btn-plus">+</button>
+    </div>
+  </div>
+
+  <div class="item" data-name="Masala Dosa" data-price="4.5">
+    <div class="item-header">
+      <span>Masala Dosa (€4.50)</span>
+    </div>
+    <div class="qty">
+      <button class="btn-minus">−</button>
+      <span class="quantity">0</span>
+      <button class="btn-plus">+</button>
+    </div>
+  </div>
+
+  <div class="item" data-name="Medu Vada" data-price="1.0">
+    <div class="item-header">
+      <span>Medu Vada (€1.00)</span>
+    </div>
+    <div class="qty">
+      <button class="btn-minus">−</button>
+      <span class="quantity">0</span>
+      <button class="btn-plus">+</button>
+    </div>
+  </div>
+
+  <div class="item" data-name="Idli" data-price="0.8">
+    <div class="item-header">
+      <span>Idli (€0.80)</span>
+    </div>
+    <div class="qty">
+      <button class="btn-minus">−</button>
+      <span class="quantity">0</span>
+      <button class="btn-plus">+</button>
+    </div>
+  </div>
+
+  <div class="total">Total: €0.00</div>
+
+  <button class="place-order">Place Order</button>
 
   <script>
-    function placeOrder() {
-      const prices = {
-        dosaBatter: 4,
-        idliBatter: 4,
-        masalaDosa: 3,
-        plainDosa: 2,
-        idli: 2
+    const items = document.querySelectorAll('.item');
+    const totalEl = document.querySelector('.total');
+    const orderBtn = document.querySelector('.place-order');
+
+    items.forEach(item => {
+      const minusBtn = item.querySelector('.btn-minus');
+      const plusBtn = item.querySelector('.btn-plus');
+      const qtyEl = item.querySelector('.quantity');
+
+      let qty = 0;
+
+      plusBtn.onclick = () => {
+        qty++;
+        qtyEl.textContent = qty;
+        updateTotal();
       };
 
-      const quantities = {
-        dosaBatter: parseInt(document.getElementById('dosaBatter').value),
-        idliBatter: parseInt(document.getElementById('idliBatter').value),
-        masalaDosa: parseInt(document.getElementById('masalaDosa').value),
-        plainDosa: parseInt(document.getElementById('plainDosa').value),
-        idli: parseInt(document.getElementById('idli').value)
-      };
-
-      let message = "🛒 *New Order Request:*\n\n";
-      let total = 0;
-
-      for (let item in quantities) {
-        if (quantities[item] > 0) {
-          const price = prices[item];
-          const cost = price * quantities[item];
-          total += cost;
-          const name = {
-            dosaBatter: "Dosa Batter",
-            idliBatter: "Idli Batter",
-            masalaDosa: "Masala Dosa",
-            plainDosa: "Plain Dosa",
-            idli: "Idli (2 pcs)"
-          }[item];
-          message += `${name}: ${quantities[item]} × €${price} = €${cost}\n`;
+      minusBtn.onclick = () => {
+        if (qty > 0) {
+          qty--;
+          qtyEl.textContent = qty;
+          updateTotal();
         }
-      }
+      };
+    });
 
+    function updateTotal() {
+      let total = 0;
+      items.forEach(item => {
+        const price = parseFloat(item.dataset.price);
+        const qty = parseInt(item.querySelector('.quantity').textContent);
+        total += price * qty;
+      });
+      totalEl.textContent = `Total: €${total.toFixed(2)}`;
+    }
+
+    orderBtn.onclick = () => {
+      let message = "Hello! I'd like to order:\n\n";
+      let total = 0;
+      items.forEach(item => {
+        const name = item.dataset.name;
+        const price = parseFloat(item.dataset.price);
+        const qty = parseInt(item.querySelector('.quantity').textContent);
+        if (qty > 0) {
+          message += `- ${name} × ${qty} — €${(price * qty).toFixed(2)}\n`;
+          total += price * qty;
+        }
+      });
       if (total === 0) {
         alert("Please select at least one item to order.");
         return;
       }
+      message += `\nTotal: €${total.toFixed(2)}\n\nPlease confirm. Thanks!`;
 
-      message += `\n*Total: €${total}*`;
-
-      const phoneNumber = "4917611748611"; 
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      const encodedMsg = encodeURIComponent(message);
+      const phone = "4917611748611";
+      const url = `https://wa.me/${phone}?text=${encodedMsg}`;
       window.open(url, '_blank');
-    }
+    };
   </script>
 </body>
 </html>
