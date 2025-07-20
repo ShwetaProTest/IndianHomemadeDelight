@@ -6,256 +6,266 @@
   <title>Delicious Indian Kitchen</title>
   <style>
     body {
-      font-family: sans-serif;
       margin: 0;
-      padding-top: 60px;
-      background: #fffaf5;
+      font-family: Arial, sans-serif;
+      background-color: #fff8f0;
     }
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: #e65100;
-      color: white;
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 15px;
+      padding: 10px 16px;
+      background-color: #f44336;
+      color: white;
+      font-size: 18px;
+      position: sticky;
+      top: 0;
       z-index: 1000;
     }
-    header h1 {
-      margin: 0;
-      font-size: 18px;
-      flex-grow: 1;
-      text-align: center;
-      cursor: pointer;
-    }
-    header button {
+    .header button {
       background: none;
       border: none;
       color: white;
       font-size: 16px;
       cursor: pointer;
     }
-    .container {
-      padding: 15px;
+    .header-title {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .cart-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .menu {
+      padding: 16px;
     }
     .category {
-      margin-bottom: 30px;
+      margin-bottom: 24px;
     }
     .item {
-      margin: 10px 0;
-      padding: 10px;
+      background-color: white;
+      margin: 8px 0;
+      padding: 12px;
       border-radius: 8px;
-      background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .item-title {
+    .item-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .item-desc {
-      font-size: 12px;
-      color: #555;
     }
     .quantity-controls {
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 5px;
+      gap: 10px;
     }
     .quantity-controls button {
-      width: 25px;
-      height: 25px;
+      padding: 4px 10px;
       font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      background: #e65100;
-      color: white;
     }
-    #viewCartBtn {
-      display: none;
+    .view-cart {
       position: fixed;
-      bottom: 15px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 12px 20px;
-      background: green;
+      background-color: green;
       color: white;
-      border: none;
-      border-radius: 8px;
+      padding: 12px 24px;
       font-size: 16px;
+      border: none;
+      border-radius: 30px;
       cursor: pointer;
-      z-index: 1000;
     }
-    #cartModal {
+    .cart-modal {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: white;
-      z-index: 2000;
-      display: none;
-      flex-direction: column;
-    }
-    #cartModalHeader {
-      padding: 15px;
-      background: #e65100;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #cartItems {
-      flex-grow: 1;
-      padding: 15px;
-    }
-    #placeOrderBtn {
-      padding: 15px;
-      background: green;
-      color: white;
-      font-size: 18px;
-      border: none;
       width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .cart-content {
+      background: white;
+      padding: 24px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+    .cart-content h2 {
+      margin-top: 0;
+    }
+    .cart-item {
+      margin-bottom: 10px;
+    }
+    .place-order {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
-    <button onclick="closeCart()">Cancel</button>
-    <h1 onclick="openOwnerChat()">Delicious Indian Kitchen</h1>
-    <button onclick="openCart()">🛒</button>
-  </header>
-  <div class="container" id="catalog"></div>
-  <button id="viewCartBtn" onclick="openCart()">View Cart</button>
+  <div class="header">
+    <button onclick="handleCancel()">Cancel</button>
+    <div class="header-title" onclick="window.open('https://wa.me/4917611748611', '_blank')">Delicious Indian Kitchen ></div>
+    <button class="cart-button" onclick="openCart()">🛒</button>
+  </div>
 
-  <div id="cartModal">
-    <div id="cartModalHeader">
-      <span>Your Cart</span>
-      <button onclick="closeCart()">✖</button>
+  <div class="menu" id="menu"></div>
+
+  <button class="view-cart" id="viewCartBtn" onclick="openCart()" style="display:none;">View Cart</button>
+
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <p id="totalPrice"></p>
+      <button class="place-order" onclick="placeOrder()">Place Order on WhatsApp</button>
     </div>
-    <div id="cartItems"></div>
-    <button id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
   </div>
 
   <script>
-    const phone = '+4917611748611';
-
-    const catalog = {
-      Biryani: [
-        { name: 'Hyderabadi Biryani', desc: 'Made with fresh veg', price: 8 },
-        { name: 'Vegetable Biryani', desc: 'Aromatic spiced rice', price: 7 },
-      ],
-      Curries: [
-        { name: 'Paneer Butter Masala', desc: 'Rich tomato curry with paneer', price: 6 },
-        { name: 'Chickpea Masala', desc: 'Spiced chickpea curry', price: 5 },
-      ],
-      Chutney: [
-        { name: 'Coconut Chutney', desc: 'Creamy coconut base', price: 2 },
-        { name: 'Mint Chutney', desc: 'Fresh and tangy', price: 2 },
-      ],
-      Batter: [
-        { name: 'Dosa Batter', desc: 'Fermented batter for dosas', price: 3 },
-        { name: 'Idli Batter', desc: 'Soft and fluffy idli mix', price: 3 },
-      ],
-      Snacks: [
-        { name: 'Medu Vada', desc: 'Crispy outside, soft inside', price: 4 },
-        { name: 'Pakoda Mix', desc: 'Spicy fritter mix', price: 3 },
-      ],
-    };
+    const menuData = [
+      {
+        category: "Biryani",
+        items: [
+          { name: "Hyderabadi Biryani", desc: "Made with fresh veg", price: 8 },
+          { name: "Vegetable Biryani", desc: "Slow cooked basmati rice", price: 7 }
+        ]
+      },
+      {
+        category: "Curries",
+        items: [
+          { name: "Paneer Butter Masala", desc: "Rich creamy tomato sauce", price: 6 },
+          { name: "Chickpea Masala", desc: "Protein-rich, lightly spiced", price: 5 }
+        ]
+      },
+      {
+        category: "Chutney",
+        items: [
+          { name: "Coconut Chutney", desc: "Fresh coconut & roasted chana", price: 2 },
+          { name: "Mint Chutney", desc: "Tangy and refreshing", price: 2 }
+        ]
+      },
+      {
+        category: "Batter",
+        items: [
+          { name: "Dosa Batter", desc: "Fermented with urad dal & rice", price: 3 },
+          { name: "Idli Batter", desc: "Soft and fluffy", price: 3 }
+        ]
+      },
+      {
+        category: "Snacks",
+        items: [
+          { name: "Medu Vada", desc: "Crispy and fluffy", price: 4 },
+          { name: "Pakoda Mix", desc: "Just fry and eat", price: 3 }
+        ]
+      }
+    ];
 
     const cart = {};
 
-    function renderCatalog() {
-      const container = document.getElementById('catalog');
-      for (const category in catalog) {
-        const section = document.createElement('div');
-        section.className = 'category';
-        section.innerHTML = `<h2>${category}</h2>`;
-        catalog[category].forEach(item => {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'item';
+    function updateMenu() {
+      const menu = document.getElementById("menu");
+      menu.innerHTML = "";
+      menuData.forEach(cat => {
+        const catDiv = document.createElement("div");
+        catDiv.className = "category";
+        catDiv.innerHTML = `<h3>${cat.category}</h3>`;
+
+        cat.items.forEach(item => {
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "item";
+
+          const qty = cart[item.name] || 0;
+
           itemDiv.innerHTML = `
-            <div class="item-title">
-              <strong>${item.name}</strong>
-              <span>€${item.price}</span>
-            </div>
-            <div class="item-desc">${item.desc}</div>
-            <div class="quantity-controls">
-              <button onclick="decrease('${item.name}')">-</button>
-              <span id="qty-${item.name}">0</span>
-              <button onclick="increase('${item.name}', ${item.price})">+</button>
+            <div class="item-header">
+              <div>
+                <strong>${item.name}</strong><br>
+                ${item.desc}<br>
+                €${item.price}
+              </div>
+              <div class="quantity-controls">
+                ${qty > 0 ? `<button onclick="decreaseQty('${item.name}')">-</button>` : ""}
+                ${qty > 0 ? `<span>${qty}</span>` : "<button onclick=\"increaseQty('${item.name}', ${item.price})\">+</button>"}
+                ${qty > 0 ? `<button onclick="increaseQty('${item.name}', ${item.price})">+</button>` : ""}
+              </div>
             </div>
           `;
-          section.appendChild(itemDiv);
+
+          catDiv.appendChild(itemDiv);
         });
-        container.appendChild(section);
-      }
+
+        menu.appendChild(catDiv);
+      });
     }
 
-    function increase(name, price) {
-      if (!cart[name]) cart[name] = { qty: 0, price };
-      cart[name].qty++;
-      document.getElementById(`qty-${name}`).innerText = cart[name].qty;
-      document.getElementById('viewCartBtn').style.display = 'block';
+    function increaseQty(name, price) {
+      cart[name] = (cart[name] || 0) + 1;
+      document.getElementById("viewCartBtn").style.display = "block";
+      updateMenu();
     }
 
-    function decrease(name) {
+    function decreaseQty(name) {
       if (cart[name]) {
-        cart[name].qty--;
-        if (cart[name].qty <= 0) delete cart[name];
-        const el = document.getElementById(`qty-${name}`);
-        if (el) el.innerText = cart[name]?.qty || 0;
+        cart[name]--;
+        if (cart[name] === 0) delete cart[name];
       }
-      if (Object.keys(cart).length === 0) {
-        document.getElementById('viewCartBtn').style.display = 'none';
-      }
+      updateMenu();
+      if (Object.keys(cart).length === 0) document.getElementById("viewCartBtn").style.display = "none";
     }
 
     function openCart() {
-      document.getElementById('cartModal').style.display = 'flex';
-      const cartItems = document.getElementById('cartItems');
-      cartItems.innerHTML = '';
+      document.getElementById("cartModal").style.display = "flex";
+      const cartItems = document.getElementById("cartItems");
+      const totalPrice = document.getElementById("totalPrice");
+      cartItems.innerHTML = "";
       let total = 0;
-      for (const name in cart) {
-        const item = cart[name];
-        const row = document.createElement('div');
-        row.innerText = `${name} × ${item.qty} — €${item.price * item.qty}`;
-        cartItems.appendChild(row);
-        total += item.price * item.qty;
+      for (const [name, qty] of Object.entries(cart)) {
+        const item = menuData.flatMap(cat => cat.items).find(i => i.name === name);
+        total += item.price * qty;
+        cartItems.innerHTML += `<div class='cart-item'>${name} × ${qty} — €${item.price * qty}</div>`;
       }
-      const totalRow = document.createElement('div');
-      totalRow.style.marginTop = '10px';
-      totalRow.innerHTML = `<strong>Total: €${total}</strong>`;
-      cartItems.appendChild(totalRow);
-    }
-
-    function closeCart() {
-      document.getElementById('cartModal').style.display = 'none';
-    }
-
-    function openOwnerChat() {
-      window.open(`https://wa.me/${phone}`, '_blank');
+      totalPrice.innerText = `Total: €${total.toFixed(2)}`;
     }
 
     function placeOrder() {
-      let msg = 'Hello! I\'d like to order:\n';
+      const phone = "4917611748611";
+      let msg = "Hello! I'd like to order:\n\n";
       let total = 0;
-      for (const name in cart) {
-        const item = cart[name];
-        msg += `- ${name} × ${item.qty} — €${item.price * item.qty}\n`;
-        total += item.price * item.qty;
+      for (const [name, qty] of Object.entries(cart)) {
+        const item = menuData.flatMap(cat => cat.items).find(i => i.name === name);
+        total += item.price * qty;
+        msg += `- ${name} × ${qty} — €${item.price * qty}\n`;
       }
-      msg += `\nTotal: €${total}`;
+      msg += `\nTotal: €${total.toFixed(2)}\n\nPlease confirm. Thanks!`;
       const encodedMsg = encodeURIComponent(msg);
       const url = `https://wa.me/${phone}?text=${encodedMsg}`;
       window.open(url, '_blank');
     }
 
-    renderCatalog();
+    function handleCancel() {
+      try {
+        window.close();
+      } catch (e) {
+        window.location.href = "https://www.google.com";
+      }
+    }
+
+    updateMenu();
   </script>
 </body>
 </html>
