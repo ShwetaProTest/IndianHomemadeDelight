@@ -33,6 +33,12 @@
     .item {
       border-bottom: 1px solid #eee;
       padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .item-info {
+      flex-grow: 1;
     }
     .item-name {
       font-weight: bold;
@@ -43,13 +49,12 @@
     }
     .price {
       font-weight: bold;
-      margin-right: 1rem;
+      margin-top: 0.3rem;
     }
     .quantity-controls {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin-top: 0.5rem;
     }
     button {
       padding: 0.3rem 0.6rem;
@@ -100,10 +105,7 @@
     .cart-actions {
       margin-top: 1rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+      justify-content: center;
     }
     .text-button {
       background: none;
@@ -122,142 +124,61 @@
       <div class="title">Delicious Indian Kitchen 🌿</div>
       <div class="subtitle">Pure Vegetarian Homemade Food</div>
     </div>
-    <button class="text-button" onclick="showCart()">Cart</button>
+    <button class="text-button" onclick="showCart()">🛒</button>
   </header>
 
   <main id="menu">
-    <!-- Biryani -->
     <h2 style="padding: 1rem 1rem 0 1rem;">Biryani</h2>
     <div class="item">
-      <div class="item-name">Hyderabadi Biryani 🌱</div>
-      <div class="item-desc">Made with fresh spices and basmati rice.</div>
-      <div>
-        <span class="price">€8</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Hyderabadi Biryani')">-</button>
-          <span id="Hyderabadi Biryani-qty">0</span>
-          <button onclick="increment('Hyderabadi Biryani', 8)">+</button>
-        </div>
+      <div class="item-info">
+        <div class="item-name">Hyderabadi Biryani 🌱</div>
+        <div class="item-desc">Made with fresh spices and basmati rice.</div>
+        <div class="price">€8</div>
       </div>
-    </div>
-    <div class="item">
-      <div class="item-name">Vegetable Biryani 🌱</div>
-      <div class="item-desc">Aromatic with mixed seasonal veggies.</div>
-      <div>
-        <span class="price">€7</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Vegetable Biryani')">-</button>
-          <span id="Vegetable Biryani-qty">0</span>
-          <button onclick="increment('Vegetable Biryani', 7)">+</button>
-        </div>
+      <div class="quantity-controls">
+        <button onclick="decrement('Hyderabadi Biryani')">−</button>
+        <span id="Hyderabadi Biryani-qty">0</span>
+        <button onclick="increment('Hyderabadi Biryani', 8)">+</button>
       </div>
     </div>
 
-    <!-- Curries -->
-    <h2 style="padding: 1rem 1rem 0 1rem;">Curries</h2>
     <div class="item">
-      <div class="item-name">Paneer Butter Masala</div>
-      <div class="item-desc">Creamy tomato-based curry with paneer.</div>
-      <div>
-        <span class="price">€6</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Paneer Butter Masala')">-</button>
-          <span id="Paneer Butter Masala-qty">0</span>
-          <button onclick="increment('Paneer Butter Masala', 6)">+</button>
-        </div>
+      <div class="item-info">
+        <div class="item-name">Vegetable Biryani 🌱</div>
+        <div class="item-desc">Aromatic rice with mixed seasonal veggies.</div>
+        <div class="price">€7</div>
       </div>
-    </div>
-    <div class="item">
-      <div class="item-name">Mixed Veg Curry</div>
-      <div class="item-desc">Cooked with fresh local vegetables.</div>
-      <div>
-        <span class="price">€5</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Mixed Veg Curry')">-</button>
-          <span id="Mixed Veg Curry-qty">0</span>
-          <button onclick="increment('Mixed Veg Curry', 5)">+</button>
-        </div>
+      <div class="quantity-controls">
+        <button onclick="decrement('Vegetable Biryani')">−</button>
+        <span id="Vegetable Biryani-qty">0</span>
+        <button onclick="increment('Vegetable Biryani', 7)">+</button>
       </div>
     </div>
 
-    <!-- Chutney -->
-    <h2 style="padding: 1rem 1rem 0 1rem;">Chutney</h2>
-    <div class="item">
-      <div class="item-name">Coconut Chutney</div>
-      <div class="item-desc">Fresh coconut with green chillies.</div>
-      <div>
-        <span class="price">€2</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Coconut Chutney')">-</button>
-          <span id="Coconut Chutney-qty">0</span>
-          <button onclick="increment('Coconut Chutney', 2)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-name">Tomato Chutney</div>
-      <div class="item-desc">Tangy and spicy tomato delight.</div>
-      <div>
-        <span class="price">€2</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Tomato Chutney')">-</button>
-          <span id="Tomato Chutney-qty">0</span>
-          <button onclick="increment('Tomato Chutney', 2)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Batter -->
-    <h2 style="padding: 1rem 1rem 0 1rem;">Batter</h2>
-    <div class="item">
-      <div class="item-name">Dosa Batter</div>
-      <div class="item-desc">Fermented rice & urad dal batter.</div>
-      <div>
-        <span class="price">€3</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Dosa Batter')">-</button>
-          <span id="Dosa Batter-qty">0</span>
-          <button onclick="increment('Dosa Batter', 3)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-name">Idli Batter</div>
-      <div class="item-desc">Soft and fluffy idlis guaranteed.</div>
-      <div>
-        <span class="price">€3</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Idli Batter')">-</button>
-          <span id="Idli Batter-qty">0</span>
-          <button onclick="increment('Idli Batter', 3)">+</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Snacks -->
     <h2 style="padding: 1rem 1rem 0 1rem;">Snacks</h2>
     <div class="item">
-      <div class="item-name">Masala Vada</div>
-      <div class="item-desc">Crispy chana dal fritters.</div>
-      <div>
-        <span class="price">€1.5</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Masala Vada')">-</button>
-          <span id="Masala Vada-qty">0</span>
-          <button onclick="increment('Masala Vada', 1.5)">+</button>
-        </div>
+      <div class="item-info">
+        <div class="item-name">Medu Vada</div>
+        <div class="item-desc">Crispy lentil fritters made fresh at home.</div>
+        <div class="price">€4</div>
+      </div>
+      <div class="quantity-controls">
+        <button onclick="decrement('Medu Vada')">−</button>
+        <span id="Medu Vada-qty">0</span>
+        <button onclick="increment('Medu Vada', 4)">+</button>
       </div>
     </div>
+
     <div class="item">
-      <div class="item-name">Onion Pakoda</div>
-      <div class="item-desc">Fried onion fritters with spices.</div>
-      <div>
-        <span class="price">€1.5</span>
-        <div class="quantity-controls">
-          <button onclick="decrement('Onion Pakoda')">-</button>
-          <span id="Onion Pakoda-qty">0</span>
-          <button onclick="increment('Onion Pakoda', 1.5)">+</button>
-        </div>
+      <div class="item-info">
+        <div class="item-name">Onion Pakora</div>
+        <div class="item-desc">Deep fried onion fritters with besan batter.</div>
+        <div class="price">€3.5</div>
+      </div>
+      <div class="quantity-controls">
+        <button onclick="decrement('Onion Pakora')">−</button>
+        <span id="Onion Pakora-qty">0</span>
+        <button onclick="increment('Onion Pakora', 3.5)">+</button>
       </div>
     </div>
   </main>
@@ -291,12 +212,12 @@
     }
 
     function decrement(item) {
-      if (cart[item] > 0) {
+      if (cart[item]) {
         cart[item]--;
-        document.getElementById(`${item}-qty`).innerText = cart[item];
-      }
-      if (cart[item] === 0) {
-        delete cart[item];
+        if (cart[item] <= 0) {
+          delete cart[item];
+        }
+        document.getElementById(`${item}-qty`).innerText = cart[item] || 0;
         if (Object.keys(cart).length === 0) {
           document.getElementById('cartBtn').style.display = 'none';
         }
@@ -316,10 +237,11 @@
       summary.innerHTML += `<hr><p><strong>Total: €${total.toFixed(2)}</strong></p>`;
       document.getElementById('cartPage').style.display = 'flex';
     }
-  
+
     function hideCart() {
       document.getElementById('cartPage').style.display = 'none';
     }
+
     function placeOrder() {
       let msg = "Hello, I would like to place the following order:%0A";
       let total = 0;
@@ -334,4 +256,6 @@
       const url = `https://wa.me/${phone}?text=${msg}`;
       window.open(url, '_blank');
     }
-</script>
+  </script>
+</body>
+</html>
