@@ -11,97 +11,82 @@
       background-color: #fff;
       color: #333;
     }
-
     header {
       background-color: #e0ffe0;
-      padding: 0.7rem 1rem;
+      padding: 0.5rem 1rem;
+      position: sticky;
+      top: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       z-index: 10;
     }
-
-    .header-title {
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    .subheader {
-      text-align: center;
-      padding: 0.5rem 1rem 1rem 1rem;
-    }
-
-    .main-title {
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    .subtitle {
-      font-size: 0.85rem;
-      color: #2e7d32;
-      margin-top: 0.2rem;
-    }
-
-    .text-button {
-      background: none;
-      border: none;
-      color: #007bff;
-      font-weight: bold;
-      cursor: pointer;
+    .center-title {
       font-size: 1rem;
+      font-weight: bold;
     }
-
-    main {
-      padding-bottom: 4rem;
+    .main-title {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0.5rem 1rem 0 1rem;
     }
-
-    h2 {
-      padding: 1rem 1rem 0.3rem 1rem;
-      color: #444;
-      font-size: 1.1rem;
+    .main-subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #2e7d32;
+      margin-bottom: 1rem;
     }
-
+    .category {
+      margin: 0 1rem;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .category-header {
+      background-color: #f7f7f7;
+      padding: 0.8rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .category-items {
+      display: none;
+    }
     .item {
-      border-bottom: 1px solid #eee;
+      border-top: 1px solid #eee;
       padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
     .item-info {
       flex-grow: 1;
     }
-
     .item-name {
       font-weight: bold;
     }
-
     .item-desc {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #666;
     }
-
     .price {
       font-weight: bold;
       margin-top: 0.3rem;
     }
-
     .quantity-controls {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-
     button {
       padding: 0.3rem 0.6rem;
       font-size: 1rem;
       cursor: pointer;
     }
-
     .view-cart {
       position: fixed;
       bottom: 1rem;
@@ -109,13 +94,12 @@
       transform: translateX(-50%);
       background-color: #4caf50;
       color: white;
-      padding: 0.8rem 1.6rem;
+      padding: 1rem 2rem;
       border: none;
       border-radius: 10px;
       font-weight: bold;
       z-index: 9;
     }
-
     #cartPage {
       position: fixed;
       background: white;
@@ -128,109 +112,121 @@
       flex-direction: column;
       z-index: 20;
     }
-
     .cart-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
     }
-
     .cart-title {
       flex-grow: 1;
       text-align: center;
       font-weight: bold;
       font-size: 1.1rem;
     }
-
     .cart-summary {
       flex: 1;
       overflow-y: auto;
     }
-
     .cart-actions {
       margin-top: 1rem;
       display: flex;
       justify-content: center;
     }
+    .text-button {
+      background: none;
+      border: none;
+      color: #007bff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
   <header>
     <button class="text-button" onclick="window.close()">Cancel</button>
-    <div class="header-title">Catalog</div>
+    <div class="center-title">Catalog</div>
     <button class="text-button" onclick="showCart()">🛒</button>
   </header>
 
-  <!-- Title Below Header -->
-  <div class="subheader">
-    <div class="main-title">Delicious Indian Homemade 🌱</div>
-    <div class="subtitle">Pure Vegetarian Homemade Food</div>
-  </div>
+  <div class="main-title">Delicious Indian Homemade</div>
+  <div class="main-subtitle">Pure vegetarian homemade food</div>
 
-  <!-- Menu Items -->
   <main id="menu">
-    <h2>Biryani</h2>
-    <div class="item">
-      <div class="item-info">
-        <div class="item-name">Hyderabadi Biryani</div>
-        <div class="item-desc">Made with fresh spices and basmati rice.</div>
-        <div class="price">€8</div>
+    <!-- Biryani Category -->
+    <div class="category">
+      <div class="category-header" onclick="toggleCategory('biryaniItems', this)">
+        Biryani
+        <span class="toggle-icon">▶️</span>
       </div>
-      <div class="quantity-controls">
-        <button onclick="decrement('Hyderabadi Biryani')">−</button>
-        <span id="Hyderabadi Biryani-qty">0</span>
-        <button onclick="increment('Hyderabadi Biryani', 8)">+</button>
+      <div class="category-items" id="biryaniItems">
+        <div class="item">
+          <div class="item-info">
+            <div class="item-name">Hyderabadi Biryani 🌱</div>
+            <div class="item-desc">Made with fresh spices and basmati rice.</div>
+            <div class="price">€8</div>
+          </div>
+          <div class="quantity-controls">
+            <button onclick="decrement('Hyderabadi Biryani')">−</button>
+            <span id="Hyderabadi Biryani-qty">0</span>
+            <button onclick="increment('Hyderabadi Biryani', 8)">+</button>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-info">
+            <div class="item-name">Vegetable Biryani 🌱</div>
+            <div class="item-desc">Aromatic rice with mixed seasonal veggies.</div>
+            <div class="price">€7</div>
+          </div>
+          <div class="quantity-controls">
+            <button onclick="decrement('Vegetable Biryani')">−</button>
+            <span id="Vegetable Biryani-qty">0</span>
+            <button onclick="increment('Vegetable Biryani', 7)">+</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="item">
-      <div class="item-info">
-        <div class="item-name">Vegetable Biryani</div>
-        <div class="item-desc">Aromatic rice with mixed seasonal veggies.</div>
-        <div class="price">€7</div>
+    <!-- Snacks Category -->
+    <div class="category">
+      <div class="category-header" onclick="toggleCategory('snacksItems', this)">
+        Snacks
+        <span class="toggle-icon">▶️</span>
       </div>
-      <div class="quantity-controls">
-        <button onclick="decrement('Vegetable Biryani')">−</button>
-        <span id="Vegetable Biryani-qty">0</span>
-        <button onclick="increment('Vegetable Biryani', 7)">+</button>
-      </div>
-    </div>
+      <div class="category-items" id="snacksItems">
+        <div class="item">
+          <div class="item-info">
+            <div class="item-name">Medu Vada</div>
+            <div class="item-desc">Crispy lentil fritters made fresh at home.</div>
+            <div class="price">€4</div>
+          </div>
+          <div class="quantity-controls">
+            <button onclick="decrement('Medu Vada')">−</button>
+            <span id="Medu Vada-qty">0</span>
+            <button onclick="increment('Medu Vada', 4)">+</button>
+          </div>
+        </div>
 
-    <h2>Snacks</h2>
-    <div class="item">
-      <div class="item-info">
-        <div class="item-name">Medu Vada</div>
-        <div class="item-desc">Crispy lentil fritters made fresh at home.</div>
-        <div class="price">€4</div>
-      </div>
-      <div class="quantity-controls">
-        <button onclick="decrement('Medu Vada')">−</button>
-        <span id="Medu Vada-qty">0</span>
-        <button onclick="increment('Medu Vada', 4)">+</button>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="item-info">
-        <div class="item-name">Onion Pakora</div>
-        <div class="item-desc">Deep fried onion fritters with besan batter.</div>
-        <div class="price">€3.5</div>
-      </div>
-      <div class="quantity-controls">
-        <button onclick="decrement('Onion Pakora')">−</button>
-        <span id="Onion Pakora-qty">0</span>
-        <button onclick="increment('Onion Pakora', 3.5)">+</button>
+        <div class="item">
+          <div class="item-info">
+            <div class="item-name">Onion Pakora</div>
+            <div class="item-desc">Deep fried onion fritters with besan batter.</div>
+            <div class="price">€3.5</div>
+          </div>
+          <div class="quantity-controls">
+            <button onclick="decrement('Onion Pakora')">−</button>
+            <span id="Onion Pakora-qty">0</span>
+            <button onclick="increment('Onion Pakora', 3.5)">+</button>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
-  <!-- View Cart Button -->
   <button class="view-cart" id="cartBtn" style="display:none" onclick="showCart()">View Cart</button>
 
-  <!-- Cart Page -->
   <div id="cartPage">
     <div class="cart-header">
       <button class="text-button" onclick="hideCart()">Cancel</button>
@@ -243,7 +239,6 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script>
     const cart = {};
     const prices = {};
@@ -302,6 +297,14 @@
       const phone = "4917611748611";
       const url = `https://wa.me/${phone}?text=${msg}`;
       window.open(url, '_blank');
+    }
+
+    function toggleCategory(id, header) {
+      const section = document.getElementById(id);
+      const icon = header.querySelector('.toggle-icon');
+      const isVisible = section.style.display === 'block';
+      section.style.display = isVisible ? 'none' : 'block';
+      icon.innerText = isVisible ? '▶️' : '🔽';
     }
   </script>
 </body>
