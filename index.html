@@ -33,6 +33,12 @@
     .item {
       border-bottom: 1px solid #eee;
       padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .item-info {
+      flex: 1;
     }
     .item-name {
       font-weight: bold;
@@ -43,13 +49,11 @@
     }
     .price {
       font-weight: bold;
-      margin-right: 1rem;
     }
     .quantity-controls {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin-top: 0.5rem;
     }
     button {
       padding: 0.3rem 0.6rem;
@@ -107,6 +111,12 @@
       cursor: pointer;
       font-size: 1rem;
     }
+    .icon-button {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -116,14 +126,14 @@
       <div class="title">Delicious Indian Kitchen 🌿</div>
       <div class="subtitle">Pure Vegetarian Homemade Food</div>
     </div>
-    <button class="text-button" onclick="showCart()">Cart</button>
+    <button class="icon-button" onclick="showCart()">🛒</button>
   </header>
 
   <main id="menu">
     <!-- Biryani -->
     <h2 style="padding: 1rem 1rem 0 1rem;">Biryani</h2>
     <div class="item">
-      <div class="item-name">Hyderabadi Biryani</div>
+      <div class="item-name">Hyderabadi Biryani 🌱</div>
       <div class="item-desc">Made with fresh spices and basmati rice.</div>
       <div>
         <span class="price">€8</span>
@@ -135,7 +145,7 @@
       </div>
     </div>
     <div class="item">
-      <div class="item-name">Vegetable Biryani</div>
+      <div class="item-name">Vegetable Biryani 🌱</div>
       <div class="item-desc">Aromatic with mixed seasonal veggies.</div>
       <div>
         <span class="price">€7</span>
@@ -261,11 +271,11 @@
   <div id="cartPage">
     <div class="cart-header">
       <button class="text-button" onclick="hideCart()">Cancel</button>
-      <div><strong>Your Cart</strong></div>
+      <div><small><strong>Your Cart</strong></small></div>
+      <button class="text-button" onclick="hideCart()">Add More Items</button>
     </div>
     <div class="cart-summary" id="cartSummary"></div>
     <div class="cart-actions">
-      <button class="text-button" onclick="hideCart()">Add More Items</button>
       <button class="view-cart" onclick="placeOrder()">Place Order</button>
     </div>
   </div>
@@ -274,27 +284,45 @@
     const cart = {};
     const prices = {};
 
-    function increment(item, price) {
-      if (!cart[item]) {
-        cart[item] = 0;
-        prices[item] = price;
-      }
-      cart[item]++;
-      document.getElementById(`${item}-qty`).innerText = cart[item];
-      document.getElementById('cartBtn').style.display = 'block';
+    function createItem(name, desc, price) {
+      const id = name.replace(/\s+/g, '-');
+      prices[name] = price;
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <div class="item-info">
+          <div class="item-name">${name}</div>
+          <div class="item-desc">${desc}</div>
+          <div class="price">€${price}</div>
+        </div>
+        <div class="quantity-controls">
+          <span id="${id}-qty">0</span>
+          <button onclick="increment('${name}', ${price})">＋</button>
+        </div>
+      `;
+      document.getElementById('menu').appendChild(div);
     }
 
-    function decrement(item) {
-      if (cart[item] > 0) {
-        cart[item]--;
-        document.getElementById(`${item}-qty`).innerText = cart[item];
-      }
-      if (cart[item] === 0) {
-        delete cart[item];
-        if (Object.keys(cart).length === 0) {
-          document.getElementById('cartBtn').style.display = 'none';
-        }
-      }
+    const items = [
+      ['Hyderabadi Biryani 🌱', 'Made with fresh spices and basmati rice.', 8],
+      ['Vegetable Biryani 🌱', 'Aromatic with mixed seasonal veggies.', 7],
+      ['Paneer Butter Masala', 'Creamy tomato-based curry with paneer.', 6],
+      ['Mixed Veg Curry', 'Cooked with fresh local vegetables.', 5],
+      ['Coconut Chutney', 'Fresh coconut with green chillies.', 2],
+      ['Tomato Chutney', 'Tangy and spicy tomato delight.', 2],
+      ['Dosa Batter', 'Fermented rice & urad dal batter.', 3],
+      ['Idli Batter', 'Soft and fluffy idlis guaranteed.', 3],
+      ['Masala Vada', 'Crispy chana dal fritters.', 1.5],
+      ['Onion Pakoda', 'Fried onion fritters with spices.', 1.5]
+    ];
+
+    items.forEach(([name, desc, price]) => createItem(name, desc, price));
+
+    function increment(item, price) {
+      if (!cart[item]) cart[item] = 0;
+      cart[item]++;
+      document.getElementById(item.replace(/\s+/g, '-') + '-qty').innerText = cart[item];
+      document.getElementById('cartBtn').style.display = 'block';
     }
 
     function showCart() {
