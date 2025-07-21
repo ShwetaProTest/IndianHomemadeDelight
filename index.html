@@ -3,319 +3,332 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Delicious Indian Kitchen 🌿</title>
+  <title>Delicious Indian Kitchen</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #fffefa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff;
       color: #333;
     }
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #e0f2e9;
-      color: #2d6a4f;
-      padding: 10px 16px;
-      font-weight: bold;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background-color: #e0ffe0;
+      padding: 1rem;
       position: sticky;
       top: 0;
-      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 10;
     }
-    .cancel-btn, .cart-btn {
-      font-size: 18px;
-      background: none;
-      border: none;
-      color: #2d6a4f;
-      cursor: pointer;
+    .title {
+      font-size: 1.2rem;
+      font-weight: bold;
     }
-    h1 {
-      font-size: 18px;
-      margin: 0;
-    }
-    .tagline {
-      font-size: 12px;
-      color: #555;
-    }
-    .container {
-      padding: 16px;
-    }
-    .category {
-      margin-bottom: 24px;
+    .subtitle {
+      font-size: 0.8rem;
+      color: #2e7d32;
     }
     .item {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 12px;
-      margin: 8px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-bottom: 1px solid #eee;
+      padding: 1rem;
     }
-    .item-title {
+    .item-name {
       font-weight: bold;
-      display: flex;
-      justify-content: space-between;
     }
-    .desc {
-      font-size: 14px;
+    .item-desc {
+      font-size: 0.9rem;
       color: #666;
-      margin: 4px 0;
     }
-    .price-add {
-      display: flex;
-      justify-content: space-between;
+    .price {
+      font-weight: bold;
+      margin-right: 1rem;
+    }
+    .quantity-controls {
+      display: inline-flex;
       align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
     }
-    .qty-btns {
-      display: flex;
-      align-items: center;
-    }
-    .qty-btns button {
-      background-color: #2d6a4f;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      font-size: 16px;
-      margin: 0 4px;
-      border-radius: 6px;
+    button {
+      padding: 0.3rem 0.6rem;
+      font-size: 1rem;
       cursor: pointer;
     }
-    .floating-cart {
+    .view-cart {
       position: fixed;
-      bottom: 20px;
+      bottom: 1rem;
       left: 50%;
       transform: translateX(-50%);
-      background-color: #2d6a4f;
+      background-color: #4caf50;
       color: white;
-      padding: 12px 24px;
-      border-radius: 24px;
-      font-size: 16px;
+      padding: 1rem 2rem;
       border: none;
-      cursor: pointer;
-      display: none;
-      z-index: 1000;
+      border-radius: 10px;
+      font-weight: bold;
+      z-index: 9;
     }
-    #cart {
-      display: none;
+    #cartPage {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
       background: white;
-      z-index: 1001;
-      padding: 20px;
-      box-sizing: border-box;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1rem;
+      display: none;
+      flex-direction: column;
+      z-index: 20;
     }
-    #closeCart {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      font-size: 20px;
-      border: none;
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .cart-summary {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .cart-actions {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .text-button {
       background: none;
-      cursor: pointer;
-    }
-    .cart-item {
-      margin: 12px 0;
-    }
-    .place-order {
-      background-color: #2d6a4f;
-      color: white;
       border: none;
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-size: 16px;
+      color: #007bff;
+      font-weight: bold;
       cursor: pointer;
-      margin-top: 16px;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
+  <header>
+    <button class="text-button" onclick="window.close()">Cancel</button>
+    <div>
+      <div class="title">Delicious Indian Kitchen 🌿</div>
+      <div class="subtitle">Pure Vegetarian Homemade Food</div>
+    </div>
+    <button class="text-button" onclick="showCart()">Cart</button>
+  </header>
 
-<header>
-  <button class="cancel-btn" onclick="cancelApp()">❌</button>
-  <div>
-    <h1>Delicious Indian Kitchen 🌿</h1>
-    <div class="tagline">Pure Vegetarian Homemade Food</div>
+  <main id="menu">
+    <!-- Biryani -->
+    <h2 style="padding: 1rem 1rem 0 1rem;">Biryani</h2>
+    <div class="item">
+      <div class="item-name">Hyderabadi Biryani 🌱</div>
+      <div class="item-desc">Made with fresh spices and basmati rice.</div>
+      <div>
+        <span class="price">€8</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Hyderabadi Biryani')">-</button>
+          <span id="Hyderabadi Biryani-qty">0</span>
+          <button onclick="increment('Hyderabadi Biryani', 8)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-name">Vegetable Biryani 🌱</div>
+      <div class="item-desc">Aromatic with mixed seasonal veggies.</div>
+      <div>
+        <span class="price">€7</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Vegetable Biryani')">-</button>
+          <span id="Vegetable Biryani-qty">0</span>
+          <button onclick="increment('Vegetable Biryani', 7)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Curries -->
+    <h2 style="padding: 1rem 1rem 0 1rem;">Curries</h2>
+    <div class="item">
+      <div class="item-name">Paneer Butter Masala</div>
+      <div class="item-desc">Creamy tomato-based curry with paneer.</div>
+      <div>
+        <span class="price">€6</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Paneer Butter Masala')">-</button>
+          <span id="Paneer Butter Masala-qty">0</span>
+          <button onclick="increment('Paneer Butter Masala', 6)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-name">Mixed Veg Curry</div>
+      <div class="item-desc">Cooked with fresh local vegetables.</div>
+      <div>
+        <span class="price">€5</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Mixed Veg Curry')">-</button>
+          <span id="Mixed Veg Curry-qty">0</span>
+          <button onclick="increment('Mixed Veg Curry', 5)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chutney -->
+    <h2 style="padding: 1rem 1rem 0 1rem;">Chutney</h2>
+    <div class="item">
+      <div class="item-name">Coconut Chutney</div>
+      <div class="item-desc">Fresh coconut with green chillies.</div>
+      <div>
+        <span class="price">€2</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Coconut Chutney')">-</button>
+          <span id="Coconut Chutney-qty">0</span>
+          <button onclick="increment('Coconut Chutney', 2)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-name">Tomato Chutney</div>
+      <div class="item-desc">Tangy and spicy tomato delight.</div>
+      <div>
+        <span class="price">€2</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Tomato Chutney')">-</button>
+          <span id="Tomato Chutney-qty">0</span>
+          <button onclick="increment('Tomato Chutney', 2)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Batter -->
+    <h2 style="padding: 1rem 1rem 0 1rem;">Batter</h2>
+    <div class="item">
+      <div class="item-name">Dosa Batter</div>
+      <div class="item-desc">Fermented rice & urad dal batter.</div>
+      <div>
+        <span class="price">€3</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Dosa Batter')">-</button>
+          <span id="Dosa Batter-qty">0</span>
+          <button onclick="increment('Dosa Batter', 3)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-name">Idli Batter</div>
+      <div class="item-desc">Soft and fluffy idlis guaranteed.</div>
+      <div>
+        <span class="price">€3</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Idli Batter')">-</button>
+          <span id="Idli Batter-qty">0</span>
+          <button onclick="increment('Idli Batter', 3)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snacks -->
+    <h2 style="padding: 1rem 1rem 0 1rem;">Snacks</h2>
+    <div class="item">
+      <div class="item-name">Masala Vada</div>
+      <div class="item-desc">Crispy chana dal fritters.</div>
+      <div>
+        <span class="price">€1.5</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Masala Vada')">-</button>
+          <span id="Masala Vada-qty">0</span>
+          <button onclick="increment('Masala Vada', 1.5)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-name">Onion Pakoda</div>
+      <div class="item-desc">Fried onion fritters with spices.</div>
+      <div>
+        <span class="price">€1.5</span>
+        <div class="quantity-controls">
+          <button onclick="decrement('Onion Pakoda')">-</button>
+          <span id="Onion Pakoda-qty">0</span>
+          <button onclick="increment('Onion Pakoda', 1.5)">+</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <button class="view-cart" id="cartBtn" style="display:none" onclick="showCart()">View Cart</button>
+
+  <div id="cartPage">
+    <div class="cart-header">
+      <button class="text-button" onclick="hideCart()">Cancel</button>
+      <div><strong>Your Cart</strong></div>
+    </div>
+    <div class="cart-summary" id="cartSummary"></div>
+    <div class="cart-actions">
+      <button class="text-button" onclick="hideCart()">Add More Items</button>
+      <button class="view-cart" onclick="placeOrder()">Place Order</button>
+    </div>
   </div>
-  <button class="cart-btn" onclick="openCart()">🛒</button>
-</header>
 
-<div class="container" id="menu">
-  <div class="category">
-    <h2>Biryani</h2>
-    <div class="item">
-      <div class="item-title">🌱 Hyderabadi Biryani <span>€8</span></div>
-      <div class="desc">Made with fresh veg & spices</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Hyderabadi Biryani', 8)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-title">🌱 Veg Biryani <span>€7</span></div>
-      <div class="desc">Aromatic, mild, family-friendly</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Veg Biryani', 7)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script>
+    const cart = {};
+    const prices = {};
 
-  <div class="category">
-    <h2>Curries</h2>
-    <div class="item">
-      <div class="item-title">🌱 Paneer Butter Masala <span>€6</span></div>
-      <div class="desc">Creamy paneer curry</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Paneer Butter Masala', 6)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-title">🌱 Chana Masala <span>€5</span></div>
-      <div class="desc">Chickpea-based tangy curry</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Chana Masala', 5)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="category">
-    <h2>Chutney</h2>
-    <div class="item">
-      <div class="item-title">🌱 Coconut Chutney <span>€2</span></div>
-      <div class="desc">Made with fresh coconut & spices</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Coconut Chutney', 2)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-title">🌱 Tomato Chutney <span>€2</span></div>
-      <div class="desc">Tangy and spicy blend</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Tomato Chutney', 2)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="category">
-    <h2>Batter</h2>
-    <div class="item">
-      <div class="item-title">🌱 Dosa Batter <span>€4</span></div>
-      <div class="desc">Fermented dosa batter for 10 dosa</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Dosa Batter', 4)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-title">🌱 Idli Batter <span>€4</span></div>
-      <div class="desc">Soft idli batter</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Idli Batter', 4)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="category">
-    <h2>Snacks</h2>
-    <div class="item">
-      <div class="item-title">🌱 Medu Vada <span>€3</span></div>
-      <div class="desc">Crispy urad dal fritters</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Medu Vada', 3)">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="item">
-      <div class="item-title">🌱 Pakora <span>€3</span></div>
-      <div class="desc">Assorted veggie fritters</div>
-      <div class="price-add">
-        <div class="qty-btns">
-          <button onclick="addToCart('Pakora', 3)">+</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<button class="floating-cart" id="viewCartBtn" onclick="openCart()">View Cart 🛒</button>
-
-<div id="cart">
-  <button id="closeCart">✖</button>
-  <h2>Your Cart</h2>
-  <div id="cartItems"></div>
-  <h3 id="total">Total: €0</h3>
-  <button class="place-order" onclick="placeOrder()">Place Order via WhatsApp</button>
-</div>
-
-<script>
-  let cart = {};
-
-  function addToCart(item, price) {
-    if (!cart[item]) {
-      cart[item] = { qty: 1, price };
-    } else {
-      cart[item].qty += 1;
+    function increment(item, price) {
+      if (!cart[item]) {
+        cart[item] = 0;
+        prices[item] = price;
+      }
+      cart[item]++;
+      document.getElementById(`${item}-qty`).innerText = cart[item];
+      document.getElementById('cartBtn').style.display = 'block';
     }
-    document.getElementById("viewCartBtn").style.display = "block";
-  }
 
-  function openCart() {
-    document.getElementById("cart").style.display = "block";
-    let cartItemsDiv = document.getElementById("cartItems");
-    cartItemsDiv.innerHTML = "";
-    let total = 0;
-    for (let item in cart) {
-      let entry = cart[item];
-      total += entry.qty * entry.price;
-      cartItemsDiv.innerHTML += `<div class="cart-item">${item} × ${entry.qty} = €${entry.qty * entry.price}</div>`;
+    function decrement(item) {
+      if (cart[item] > 0) {
+        cart[item]--;
+        document.getElementById(`${item}-qty`).innerText = cart[item];
+      }
+      if (cart[item] === 0) {
+        delete cart[item];
+        if (Object.keys(cart).length === 0) {
+          document.getElementById('cartBtn').style.display = 'none';
+        }
+      }
     }
-    document.getElementById("total").innerText = `Total: €${total}`;
-  }
 
-  document.getElementById("closeCart").addEventListener("click", () => {
-    document.getElementById("cart").style.display = "none";
-  });
-
-  function placeOrder() {
-    let msg = "Order summary:\n";
-    let total = 0;
-    for (let item in cart) {
-      let entry = cart[item];
-      msg += `${item} × ${entry.qty} = €${entry.qty * entry.price}\n`;
-      total += entry.qty * entry.price;
+    function showCart() {
+      const summary = document.getElementById('cartSummary');
+      summary.innerHTML = '';
+      let total = 0;
+      for (let item in cart) {
+        const qty = cart[item];
+        const itemTotal = qty * prices[item];
+        total += itemTotal;
+        summary.innerHTML += `<p>${item} x ${qty} = €${itemTotal.toFixed(2)}</p>`;
+      }
+      summary.innerHTML += `<hr><p><strong>Total: €${total.toFixed(2)}</strong></p>`;
+      document.getElementById('cartPage').style.display = 'flex';
     }
-    msg += `Total: €${total}`;
-    let phone = "4917611748611";
-    let encodedMsg = encodeURIComponent(msg);
-    let url = `https://wa.me/${phone}?text=${encodedMsg}`;
-    window.open(url, "_blank");
-  }
 
-  function cancelApp() {
-    try {
-      window.close();
-    } catch {
-      window.location.href = "https://www.google.com";
+    function hideCart() {
+      document.getElementById('cartPage').style.display = 'none';
     }
-  }
-</script>
 
+    function placeOrder() {
+      let msg = "Hello, I would like to place the following order:%0A";
+      let total = 0;
+      for (let item in cart) {
+        const qty = cart[item];
+        const itemTotal = qty * prices[item];
+        total += itemTotal;
+        msg += `${item} x ${qty} = €${itemTotal.toFixed(2)}%0A`;
+      }
+      msg += `%0ATotal: €${total.toFixed(2)}`;
+      const phone = "4917611748611";
+      const url = `https://wa.me/${phone}?text=${msg}`;
+      window.open(url, '_blank');
+    }
+  </script>
 </body>
 </html>
