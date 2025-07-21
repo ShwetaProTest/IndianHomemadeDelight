@@ -286,14 +286,14 @@
         prices[item] = price;
       }
       cart[item]++;
-      document.getElementById(${item}-qty).innerText = cart[item];
+      document.getElementById(`${item}-qty`).innerText = cart[item];
       document.getElementById('cartBtn').style.display = 'block';
     }
 
     function decrement(item) {
       if (cart[item] > 0) {
         cart[item]--;
-        document.getElementById(${item}-qty).innerText = cart[item];
+        document.getElementById(`${item}-qty`).innerText = cart[item];
       }
       if (cart[item] === 0) {
         delete cart[item];
@@ -311,16 +311,15 @@
         const qty = cart[item];
         const itemTotal = qty * prices[item];
         total += itemTotal;
-        summary.innerHTML += <p>${item} x ${qty} = €${itemTotal.toFixed(2)}</p>;
+        summary.innerHTML += `<p>${item} x ${qty} = €${itemTotal.toFixed(2)}</p>`;
       }
-      summary.innerHTML += <hr><p><strong>Total: €${total.toFixed(2)}</strong></p>;
+      summary.innerHTML += `<hr><p><strong>Total: €${total.toFixed(2)}</strong></p>`;
       document.getElementById('cartPage').style.display = 'flex';
     }
-
+  
     function hideCart() {
       document.getElementById('cartPage').style.display = 'none';
     }
-
     function placeOrder() {
       let msg = "Hello, I would like to place the following order:%0A";
       let total = 0;
@@ -328,13 +327,11 @@
         const qty = cart[item];
         const itemTotal = qty * prices[item];
         total += itemTotal;
-        msg += ${item} x ${qty} = €${itemTotal.toFixed(2)}%0A;
+        msg += `${item} x ${qty} = €${itemTotal.toFixed(2)}%0A`;
       }
-      msg += %0ATotal: €${total.toFixed(2)};
+      msg += `%0ATotal: €${total.toFixed(2)}`;
       const phone = "4917611748611";
-      const url = https://wa.me/${phone}?text=${msg};
+      const url = `https://wa.me/${phone}?text=${msg}`;
       window.open(url, '_blank');
     }
-  </script>
-</body>
-</html>
+</script>
