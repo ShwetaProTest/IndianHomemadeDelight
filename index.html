@@ -87,6 +87,12 @@
       align-items: center;
       margin-bottom: 1rem;
     }
+    .cart-title {
+      flex-grow: 1;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
     .cart-summary {
       flex: 1;
       overflow-y: auto;
@@ -261,11 +267,11 @@
   <div id="cartPage">
     <div class="cart-header">
       <button class="text-button" onclick="hideCart()">Cancel</button>
-      <div><strong>Your Cart</strong></div>
+      <div class="cart-title">Your Cart</div>
+      <button class="text-button" onclick="hideCart()">Add More Items</button>
     </div>
     <div class="cart-summary" id="cartSummary"></div>
     <div class="cart-actions">
-      <button class="text-button" onclick="hideCart()">Add More Items</button>
       <button class="view-cart" onclick="placeOrder()">Place Order</button>
     </div>
   </div>
