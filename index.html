@@ -2,193 +2,320 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Delicious Indian Kitchen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delicious Indian Kitchen 🌿</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #fff;
+      background-color: #fffefa;
+      color: #333;
     }
-    .header {
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem;
-      background-color: #ff7043;
-      color: #fff;
+      background-color: #e0f2e9;
+      color: #2d6a4f;
+      padding: 10px 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 1000;
     }
-    .header button, .header a {
+    .cancel-btn, .cart-btn {
+      font-size: 18px;
       background: none;
       border: none;
-      color: white;
-      font-size: 1rem;
+      color: #2d6a4f;
       cursor: pointer;
-      text-decoration: none;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+    .tagline {
+      font-size: 12px;
+      color: #555;
+    }
+    .container {
+      padding: 16px;
     }
     .category {
-      padding: 1rem;
+      margin-bottom: 24px;
     }
     .item {
-      margin-bottom: 1rem;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 8px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     .item-title {
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
     }
-    .cart-button {
-      background-color: green;
+    .desc {
+      font-size: 14px;
+      color: #666;
+      margin: 4px 0;
+    }
+    .price-add {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .qty-btns {
+      display: flex;
+      align-items: center;
+    }
+    .qty-btns button {
+      background-color: #2d6a4f;
       color: white;
-      padding: 0.5rem 1rem;
       border: none;
-      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: 16px;
+      margin: 0 4px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .floating-cart {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2d6a4f;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 16px;
+      border: none;
       cursor: pointer;
       display: none;
-      margin: 1rem;
+      z-index: 1000;
     }
     #cart {
+      display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: white;
-      z-index: 20;
-      padding: 1rem;
-      overflow-y: auto;
-      display: none;
+      z-index: 1001;
+      padding: 20px;
+      box-sizing: border-box;
     }
-    .hidden {
-      display: none;
-    }
-    .cart-summary {
-      margin-bottom: 1rem;
-    }
-    .close-cart-button {
+    #closeCart {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
+      top: 16px;
+      right: 16px;
+      font-size: 20px;
       border: none;
-      font-size: 1.5rem;
+      background: none;
       cursor: pointer;
+    }
+    .cart-item {
+      margin: 12px 0;
+    }
+    .place-order {
+      background-color: #2d6a4f;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <button onclick="try { window.close(); } catch { window.location.href = 'https://www.google.com'; }">Cancel</button>
-    <a href="https://wa.me/4917611748611" target="_blank">Delicious Indian Kitchen</a>
-    <button onclick="showCart()">🛒</button>
+
+<header>
+  <button class="cancel-btn" onclick="cancelApp()">❌</button>
+  <div>
+    <h1>Delicious Indian Kitchen 🌿</h1>
+    <div class="tagline">Pure Vegetarian Homemade Food</div>
+  </div>
+  <button class="cart-btn" onclick="openCart()">🛒</button>
+</header>
+
+<div class="container" id="menu">
+  <div class="category">
+    <h2>Biryani</h2>
+    <div class="item">
+      <div class="item-title">🌱 Hyderabadi Biryani <span>€8</span></div>
+      <div class="desc">Made with fresh veg & spices</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Hyderabadi Biryani', 8)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-title">🌱 Veg Biryani <span>€7</span></div>
+      <div class="desc">Aromatic, mild, family-friendly</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Veg Biryani', 7)">+</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="catalog"></div>
-
-  <button id="viewCartBtn" class="cart-button" onclick="showCart()">View Cart</button>
-
-  <div id="cart">
-    <button id="closeCart" class="close-cart-button">✖</button>
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <p class="cart-summary" id="totalCost"></p>
-    <button onclick="placeOrder()">Place Order</button>
+  <div class="category">
+    <h2>Curries</h2>
+    <div class="item">
+      <div class="item-title">🌱 Paneer Butter Masala <span>€6</span></div>
+      <div class="desc">Creamy paneer curry</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Paneer Butter Masala', 6)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-title">🌱 Chana Masala <span>€5</span></div>
+      <div class="desc">Chickpea-based tangy curry</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Chana Masala', 5)">+</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    const catalog = {
-      Biryani: [
-        { name: "Hyderabadi Biryani", desc: "Made with fresh veg", price: 8 },
-        { name: "Vegetable Biryani", desc: "Spiced with Indian herbs", price: 7.5 }
-      ],
-      Curries: [
-        { name: "Paneer Butter Masala", desc: "Rich and creamy curry", price: 6 },
-        { name: "Chana Masala", desc: "Chickpeas cooked in spices", price: 5.5 }
-      ],
-      Chutney: [
-        { name: "Coconut Chutney", desc: "Fresh coconut blend", price: 2 },
-        { name: "Mint Chutney", desc: "Spicy mint and herbs", price: 2 }
-      ],
-      Batter: [
-        { name: "Dosa Batter", desc: "Fresh homemade batter", price: 3 },
-        { name: "Idli Batter", desc: "Fermented and ready", price: 3 }
-      ],
-      Snacks: [
-        { name: "Medu Vada", desc: "Crispy urad dal fritters", price: 4 },
-        { name: "Samosa", desc: "Potato filled triangles", price: 3 }
-      ]
-    };
+  <div class="category">
+    <h2>Chutney</h2>
+    <div class="item">
+      <div class="item-title">🌱 Coconut Chutney <span>€2</span></div>
+      <div class="desc">Made with fresh coconut & spices</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Coconut Chutney', 2)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-title">🌱 Tomato Chutney <span>€2</span></div>
+      <div class="desc">Tangy and spicy blend</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Tomato Chutney', 2)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    const cart = {};
+  <div class="category">
+    <h2>Batter</h2>
+    <div class="item">
+      <div class="item-title">🌱 Dosa Batter <span>€4</span></div>
+      <div class="desc">Fermented dosa batter for 10 dosa</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Dosa Batter', 4)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-title">🌱 Idli Batter <span>€4</span></div>
+      <div class="desc">Soft idli batter</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Idli Batter', 4)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    function renderCatalog() {
-      const container = document.getElementById("catalog");
-      container.innerHTML = "";
+  <div class="category">
+    <h2>Snacks</h2>
+    <div class="item">
+      <div class="item-title">🌱 Medu Vada <span>€3</span></div>
+      <div class="desc">Crispy urad dal fritters</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Medu Vada', 3)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-title">🌱 Pakora <span>€3</span></div>
+      <div class="desc">Assorted veggie fritters</div>
+      <div class="price-add">
+        <div class="qty-btns">
+          <button onclick="addToCart('Pakora', 3)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-      Object.keys(catalog).forEach(category => {
-        const catDiv = document.createElement("div");
-        catDiv.className = "category";
-        catDiv.innerHTML = `<h3>${category}</h3>`;
+<button class="floating-cart" id="viewCartBtn" onclick="openCart()">View Cart 🛒</button>
 
-        catalog[category].forEach(item => {
-          const itemDiv = document.createElement("div");
-          itemDiv.className = "item";
+<div id="cart">
+  <button id="closeCart">✖</button>
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <h3 id="total">Total: €0</h3>
+  <button class="place-order" onclick="placeOrder()">Place Order via WhatsApp</button>
+</div>
 
-          itemDiv.innerHTML = `
-            <div class="item-title">${item.name}</div>
-            <div>${item.desc}</div>
-            <div>${item.price.toFixed(2)} Euro</div>
-            <button onclick='addToCart("${item.name}", ${item.price})'>+</button>
-          `;
+<script>
+  let cart = {};
 
-          catDiv.appendChild(itemDiv);
-        });
-
-        container.appendChild(catDiv);
-      });
+  function addToCart(item, price) {
+    if (!cart[item]) {
+      cart[item] = { qty: 1, price };
+    } else {
+      cart[item].qty += 1;
     }
+    document.getElementById("viewCartBtn").style.display = "block";
+  }
 
-    function addToCart(name, price) {
-      if (!cart[name]) cart[name] = { qty: 0, price };
-      cart[name].qty++;
-      document.getElementById("viewCartBtn").style.display = "block";
+  function openCart() {
+    document.getElementById("cart").style.display = "block";
+    let cartItemsDiv = document.getElementById("cartItems");
+    cartItemsDiv.innerHTML = "";
+    let total = 0;
+    for (let item in cart) {
+      let entry = cart[item];
+      total += entry.qty * entry.price;
+      cartItemsDiv.innerHTML += `<div class="cart-item">${item} × ${entry.qty} = €${entry.qty * entry.price}</div>`;
     }
+    document.getElementById("total").innerText = `Total: €${total}`;
+  }
 
-    function showCart() {
-      const cartDiv = document.getElementById("cartItems");
-      cartDiv.innerHTML = "";
-      let total = 0;
+  document.getElementById("closeCart").addEventListener("click", () => {
+    document.getElementById("cart").style.display = "none";
+  });
 
-      Object.keys(cart).forEach(item => {
-        const qty = cart[item].qty;
-        const price = cart[item].price;
-        total += qty * price;
-        cartDiv.innerHTML += `<p>${item} x ${qty} = €${(qty * price).toFixed(2)}</p>`;
-      });
-
-      document.getElementById("totalCost").innerText = `Total: €${total.toFixed(2)}`;
-      document.getElementById("cart").style.display = "block";
+  function placeOrder() {
+    let msg = "Order summary:\n";
+    let total = 0;
+    for (let item in cart) {
+      let entry = cart[item];
+      msg += `${item} × ${entry.qty} = €${entry.qty * entry.price}\n`;
+      total += entry.qty * entry.price;
     }
+    msg += `Total: €${total}`;
+    let phone = "4917611748611";
+    let encodedMsg = encodeURIComponent(msg);
+    let url = `https://wa.me/${phone}?text=${encodedMsg}`;
+    window.open(url, "_blank");
+  }
 
-    document.getElementById("closeCart").addEventListener("click", () => {
-      document.getElementById("cart").style.display = "none";
-    });
-
-    function placeOrder() {
-      let msg = "Order Summary:\n";
-      Object.keys(cart).forEach(item => {
-        msg += `${item} x ${cart[item].qty} = €${(cart[item].qty * cart[item].price).toFixed(2)}\n`;
-      });
-
-      const phone = "4917611748611";
-      const encodedMsg = encodeURIComponent(msg);
-      const url = `https://wa.me/${phone}?text=${encodedMsg}`;
-      window.open(url, "_blank");
+  function cancelApp() {
+    try {
+      window.close();
+    } catch {
+      window.location.href = "https://www.google.com";
     }
+  }
+</script>
 
-    renderCatalog();
-  </script>
 </body>
 </html>
